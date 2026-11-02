@@ -21,7 +21,7 @@ Describe the problem you are trying to solve, who it would help, and what the ex
 5. Open a pull request explaining the problem, the resulting behavior, and how you checked it. Include a screenshot for a visible UI change.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q --basetemp data\pytest-contribution
+.\.venv\Scripts\python.exe -m pytest -q --basetemp test-results
 npm.cmd run build
 ```
 
