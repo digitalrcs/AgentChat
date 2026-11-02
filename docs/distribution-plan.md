@@ -1,14 +1,16 @@
 # Sharing AgentChat more widely
 
-This is a distribution plan, not a claim that a Hugging Face Space or YouTube video has been published. GitHub is the source of truth for code, releases, and versioned guides.
+The Hugging Face showcase is published at [danroberts/AgentChat](https://huggingface.co/spaces/danroberts/AgentChat). The YouTube walkthrough remains a plan, not a published video. GitHub is the source of truth for code, releases, and versioned guides.
 
-## Recommended next step: a Hugging Face showcase
+## Published Hugging Face showcase
 
 Publish the existing `marketing/` page as a **Static HTML Space**. It introduces the project and links to the Windows download and guides. It does not run a shared chat server or accept conversations.
 
 Hugging Face documents Static Spaces as free for everyone and supports plain HTML with `sdk: static`. No Python backend is needed for this showcase. [Official Static HTML Spaces guide](https://huggingface.co/docs/hub/spaces-sdks-static)
 
-When the owner is ready to publish:
+For future updates, run `python scripts/package_huggingface.py` from the repository root and upload the seven files from `.publish-staging/huggingface/` through the Space Files tab. The generator keeps external links outside the embedded iframe. The Space card source is `huggingface/README.md`.
+
+Original setup steps:
 
 1. Choose the intended Hugging Face account and create a public Space with the Static SDK and MIT license.
 2. Copy `marketing/index.html`, `marketing/style.css`, and `marketing/assets/` into its root. Keep the existing GitHub download links.
@@ -47,3 +49,5 @@ Use a short, captioned screen recording of a fresh demonstration workspace. Show
 ## Publication record
 
 After each actual launch, record the public URL, date, version demonstrated, and a link check. Keep planned channels clearly separate from published channels. This research was checked against the official sources on November 1, 2026; hosting policies can change.
+
+Published November 1, 2026 (America/New_York): public Static Space, MIT license, original branding, installation and download links. No local data or credentials were uploaded.

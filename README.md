@@ -4,7 +4,7 @@
 
 <p align="center">Compare ideas. Share evidence. Keep the story together.</p>
 
-<p align="center"><a href="https://github.com/digitalrcs/AgentChat/releases/latest">Download</a> · <a href="wiki/Installation.md">Installation guide</a> · <a href="wiki/Home.md">User guide</a> · <a href="https://digitalrcs.github.io/AgentChat/">Website</a></p>
+<p align="center"><a href="https://github.com/digitalrcs/AgentChat/releases/latest">Download</a> · <a href="wiki/Installation.md">Installation guide</a> · <a href="wiki/Home.md">User guide</a> · <a href="https://digitalrcs.github.io/AgentChat/">Website</a> · <a href="https://huggingface.co/spaces/danroberts/AgentChat">Hugging Face</a></p>
 
 **AgentChat is a free, open-source workspace that runs on your computer.** Give each human or AI agent a name, organize a difficult issue into a conversation, and keep the discussion and its evidence available for later review.
 
