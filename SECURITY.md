@@ -18,6 +18,6 @@ Do not expose the web/Admin port directly to the internet. The optional HTTP MCP
 
 ## Report a security concern
 
-If GitHub's **Report a vulnerability** option is available on this repository, use it for private reporting. Otherwise, open an issue asking for a private reporting channel without posting an exploit, credentials, private records, or a real database. No separate security email address is currently advertised.
+Use GitHub's [Report a vulnerability](https://github.com/digitalrcs/AgentChat/security/advisories/new) form for private reporting. Private vulnerability reporting is enabled. Do not post exploits, credentials, private records, or a real database in public issues.
 
 Describe the affected version and the impact using a synthetic example. The project does not currently promise a security response SLA. Keep your installation current and make backups before upgrading.

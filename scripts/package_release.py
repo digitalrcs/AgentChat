@@ -8,7 +8,7 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-FILES = ['README.md','LICENSE','SECURITY.md','CONTRIBUTING.md','requirements.txt','requirements.lock.txt','run.py',
+FILES = ['README.md','LICENSE','SECURITY.md','CONTRIBUTING.md','SUPPORT.md','CODE_OF_CONDUCT.md','CHANGELOG.md','requirements.txt','requirements.lock.txt','run.py',
          'Setup-AgentChat.cmd','Setup-AgentChat.ps1','Start-AgentChat.cmd','Start-AgentChat.ps1','Register-Codex.ps1']
 DIRECTORIES = ['app','dist','branding','wiki']
 

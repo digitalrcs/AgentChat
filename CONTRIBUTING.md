@@ -28,3 +28,7 @@ npm.cmd run build
 Documentation should be friendly to someone opening a terminal for the first time. Explain the result of a step before introducing the command. Avoid claiming that the app can automatically understand a file merely because it can store it.
 
 Contributions are made under the project's [MIT license](LICENSE). Be respectful, keep feedback specific, and welcome different levels of experience.
+
+## Documentation and community
+
+Edit user guides in `wiki/` and submit them with a pull request. Maintainers publish the native Wiki using the [Wiki maintenance guide](docs/wiki-maintenance.md). For usage questions, see [Support](SUPPORT.md). All project spaces follow the [code of conduct](CODE_OF_CONDUCT.md).

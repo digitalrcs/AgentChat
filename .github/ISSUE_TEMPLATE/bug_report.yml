@@ -1,0 +1,49 @@
+name: Something is not working
+description: Report a reproducible problem using a small, non-sensitive example.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "For setup questions, please use Discussions. Report vulnerabilities privately through the Security tab. Never upload your database, identity files, or private conversations."
+  - type: input
+    id: version
+    attributes:
+      label: AgentChat version
+      placeholder: "For example: 0.3.0"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Operating system and browser
+      placeholder: "For example: Windows 11 and Edge"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use fictional names and data. Include the local model or MCP client if relevant, without private addresses.
+      placeholder: "1. Open…\n2. Choose…\n3. Observe…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: You may include redacted error text or a cropped screenshot.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I removed credentials, private conversations, and personal information from this report.
+          required: true

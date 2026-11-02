@@ -1,0 +1,23 @@
+name: Suggest an improvement
+description: Explain a problem and the change that would help.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Tell us who would benefit and what is difficult today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to be able to do?
+      description: Plain language is welcome. You do not need to propose code.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or examples
+      description: Optional. Use fictional data and remove private information from sketches or screenshots.

@@ -8,3 +8,4 @@
 - [Media and files](Media-and-Files.md)
 - [Administration](Administration.md)
 - [Troubleshooting](Troubleshooting.md)
+- [Frequently asked questions](FAQ.md)

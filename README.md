@@ -6,11 +6,11 @@
 
 <p align="center">Created by<br /><a href="https://digitalrcs.com/"><img src="branding/digitalrcs-logo.webp" alt="DigitalRCS" width="200" /></a></p>
 
-<p align="center"><a href="https://github.com/digitalrcs/AgentChat/releases/latest">Download</a> · <a href="wiki/Installation.md">Installation guide</a> · <a href="wiki/Home.md">User guide</a> · <a href="https://digitalrcs.github.io/AgentChat/">Website</a> · <a href="https://huggingface.co/spaces/danroberts/AgentChat">Hugging Face</a></p>
+<p align="center"><a href="https://github.com/digitalrcs/AgentChat/releases/latest">Download</a> · <a href="wiki/Installation.md">Installation guide</a> · <a href="https://github.com/digitalrcs/AgentChat/wiki">Wiki</a> · <a href="https://digitalrcs.github.io/AgentChat/">Website</a> · <a href="https://huggingface.co/spaces/danroberts/AgentChat">Hugging Face</a></p>
 
 **DigitalRCS AgentChat is a free, open-source workspace that runs on your computer.** Give each human or AI agent a name, organize a difficult issue into a conversation, and keep the discussion and its evidence available for later review.
 
-Connect local models through LM Studio or let an existing assistant join through MCP. DigitalRCS AgentChat itself does not require a cloud AI account or an DigitalRCS AgentChat subscription. Your selected AI tools may have their own costs and requirements.
+Connect local models through LM Studio or let an existing assistant join through MCP. DigitalRCS AgentChat itself does not require a cloud AI account or a DigitalRCS AgentChat subscription. Your selected AI tools may have their own costs and requirements.
 
 ## What you can do
 
@@ -60,7 +60,7 @@ Add a screenshot or file when it supplies useful evidence. Review what the agent
 | Back up, revoke access, or reset | [Administration](wiki/Administration.md) |
 | Solve a setup problem | [Troubleshooting](wiki/Troubleshooting.md) |
 
-The `wiki/` folder is a versioned copy of the user documentation. Read it in this repository even if the separate GitHub Wiki is not enabled.
+Browse the [GitHub Wiki](https://github.com/digitalrcs/AgentChat/wiki) for the online guide. The `wiki/` folder is the versioned source and remains available offline in release downloads.
 
 ## Connect Codex
 
@@ -104,8 +104,8 @@ The default database is `data/agentchat.sqlite3`. Use `AGENTCHAT_DB` or `--db PA
 
 ## Join in
 
-Report a problem, suggest a clearer instruction, or contribute a focused improvement. [Contributing guide](CONTRIBUTING.md) · [Issues](https://github.com/digitalrcs/AgentChat/issues)
+Report a problem, suggest a clearer instruction, or contribute a focused improvement. [Contributing guide](CONTRIBUTING.md) · [Get help](SUPPORT.md) · [Discussions](https://github.com/digitalrcs/AgentChat/discussions) · [Issues](https://github.com/digitalrcs/AgentChat/issues)
 
-The public page is in `marketing/`. A [distribution plan](docs/distribution-plan.md) explores a Hugging Face showcase and future YouTube walkthrough without treating either as already published.
+The public page is in `marketing/`. The [Hugging Face showcase](https://huggingface.co/spaces/danroberts/AgentChat) links to the local app download; a YouTube walkthrough is still planned. See the [changelog](CHANGELOG.md) for released changes and the [code of conduct](CODE_OF_CONDUCT.md) for community expectations.
 
 Released under the [MIT license](LICENSE). DigitalRCS AgentChat is independent, not an official product of OpenAI, LM Studio, Hugging Face, or GitHub.

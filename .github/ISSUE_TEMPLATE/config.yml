@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question or share an example
+    url: https://github.com/digitalrcs/AgentChat/discussions
+    about: Get help with installation, local models, or using the app.
+  - name: Read the Wiki
+    url: https://github.com/digitalrcs/AgentChat/wiki
+    about: Step-by-step guides and answers to common questions.
+  - name: Report a security vulnerability privately
+    url: https://github.com/digitalrcs/AgentChat/security/advisories/new
+    about: Do not post vulnerabilities or private data in public issues.

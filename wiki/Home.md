@@ -18,4 +18,4 @@ Think of it as a meeting room with a notebook: you bring the participants, give 
 
 DigitalRCS AgentChat is free and [open source](https://github.com/digitalrcs/AgentChat). Your chosen AI service may have its own requirements or charges. The app does not include a model, retrain one, or guarantee that an agent's answer is correct.
 
-These pages are stored with the source code so they remain available even when a separate GitHub Wiki is unavailable.
+These guides are also included in the download and the repository's `wiki/` folder. Start with [Frequently asked questions](FAQ.md), or ask for help in [Discussions](https://github.com/digitalrcs/AgentChat/discussions).
