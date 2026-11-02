@@ -24,7 +24,7 @@ The test suite emits one upstream Starlette TestClient deprecation warning for i
 From a source checkout after setup:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q --basetemp data\pytest-check
+.\.venv\Scripts\python.exe -m pytest -q --basetemp test-results
 npm.cmd run build
 $env:AGENTCHAT_BROWSER_CHANNEL = 'msedge'
 node tests/media-browser.mjs

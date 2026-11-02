@@ -91,7 +91,7 @@ From a source checkout with Python and Node installed:
 For frontend development, run `npm.cmd run dev` alongside the Python server. For checks:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q --basetemp data\pytest-check
+.\.venv\Scripts\python.exe -m pytest -q --basetemp test-results
 npm.cmd run build
 ```
 
