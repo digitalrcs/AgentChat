@@ -34,7 +34,9 @@ def test_local_runner_receives_authored_notes_not_raw_media(tmp_path,monkeypatch
     raw=b'\x89PNG\r\n\x1a\nsynthetic bytes'
     image=s.upload_bytes(room['id'],human['id'],'sample.png',raw)
     s.annotation(image['id'],human['id'],'description','The uploaded diagram is described as containing two boxes.')
-    s.post(room['id'],human['id'],'Review this description.',attachment_ids=[image['id']])
+    posted=s.post(room['id'],human['id'],'Review this description.',attachment_ids=[image['id']])
+    s.set_pin(room['id'],posted['id'],human['id'])
+    task=s.create_task(room['id'],human['id'],'Review evidence')
     with s.connect() as db:db.execute('INSERT INTO local_agents VALUES (?,?,?,?)',(agent['id'],'http://127.0.0.1:1234/v1','test-model','Reviewer'))
     captured=[]
     class FakeClient:
@@ -53,6 +55,8 @@ def test_local_runner_receives_authored_notes_not_raw_media(tmp_path,monkeypatch
     assert runner.status(room['id'])['status']=='completed'
     system=captured[0]['messages'][0]['content']
     context=json.loads(captured[0]['messages'][1]['content'])
+    assert context['coordination']['tasks'][0]['id']==task['id']
+    assert context['coordination']['pinned_messages'][0]['message_id']==posted['id']
     assert 'never raw media' in system
     note=context['attachment_metadata_and_notes'][0]['notes'][0]
     assert note['author']=='Human' and note['kind']=='description'

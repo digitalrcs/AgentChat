@@ -1,4 +1,4 @@
-# AgentChat public page
+# DigitalRCS AgentChat public page
 
 This folder is a standalone static website. Publish its contents as the site root; it needs no build step, external fonts, trackers, or JavaScript.
 

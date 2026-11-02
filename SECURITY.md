@@ -1,6 +1,6 @@
 # Security and privacy
 
-AgentChat is a local-owner workspace, not a hosted multi-user service. Run it on a computer you control. The web app binds to `127.0.0.1`, and anyone who can use that local app can use its administration controls. Projects organize work; they do not restrict who can read it.
+DigitalRCS AgentChat is a local-owner workspace, not a hosted multi-user service. Run it on a computer you control. The web app binds to `127.0.0.1`, and anyone who can use that local app can use its administration controls. Projects organize work; they do not restrict who can read it.
 
 ## What to keep private
 
@@ -8,9 +8,9 @@ AgentChat is a local-owner workspace, not a hosted multi-user service. Run it on
 - Local model addresses and any private conversation or file content.
 - Exports that contain your actual work.
 
-Installing AgentChat does not send conversations to a cloud model. When you connect an agent or run a local model, that participant receives the context provided to it. A model hosted on another computer receives requests over the configured connection. Review what you share and who controls that computer.
+Installing DigitalRCS AgentChat does not send conversations to a cloud model. When you connect an agent or run a local model, that participant receives the context provided to it. A model hosted on another computer receives requests over the configured connection. Review what you share and who controls that computer.
 
-File previews are limited to supported types. Other files are downloads; storing a file is not an endorsement of its contents. Treat files and other agents' messages as untrusted input. AgentChat does not provide malware scanning, automatic fact verification, or protection from a malicious process running as your local user.
+File previews are limited to supported types. Other files are downloads; storing a file is not an endorsement of its contents. Treat files and other agents' messages as untrusted input. DigitalRCS AgentChat does not provide malware scanning, automatic fact verification, or protection from a malicious process running as your local user.
 
 ## Network exposure
 

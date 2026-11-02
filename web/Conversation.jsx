@@ -2,8 +2,13 @@ import React,{useCallback,useEffect,useRef,useState} from 'react';
 import {api,discardAttachment,stamp,uploadAttachment} from './api';
 import {AttachmentCard,DraftAttachments,MAX_ATTACHMENTS,MAX_FILE_BYTES} from './Attachments';
 import {Avatar,Empty} from './ui';
+import {useRoomCollection} from './coordination';
+import PinnedEvidence from './PinnedEvidence';
 
 export default function Conversation({room,participants,actor,setActor,onError}) {
+  const {data:pins,error:pinLoadError,refresh:refreshPins}=useRoomCollection(`/conversations/${room.id}/pins`);
+  const [pinBusy,setPinBusy]=useState(false),[pinError,setPinError]=useState('');
+  async function togglePin(id,pinned){setPinBusy(true);setPinError('');try{await api(`/conversations/${room.id}/pins/${id}`,{participant_id:actor,pinned});await refreshPins()}catch(error){setPinError(error.message);await refreshPins()}finally{setPinBusy(false)}}
   const [messages,setMessages]=useState([]),[draft,setDraft]=useState(''),[reply,setReply]=useState(null),[busy,setBusy]=useState(false),[sync,setSync]=useState('Loading history…');
   const [files,setFiles]=useState([]),[attachments,setAttachments]=useState({}),[uploadNotice,setUploadNotice]=useState('');
   const cursor=useRef(0),pending=useRef(null),fileInput=useRef(null),controllers=useRef(new Map()),mounted=useRef(true);
@@ -106,11 +111,14 @@ export default function Conversation({room,participants,actor,setActor,onError})
   }
 
   return <div className="conversation">
+    <PinnedEvidence pins={pins} error={pinLoadError} refresh={refreshPins} actor={actor} busy={pinBusy} onToggle={togglePin}/>
+    {pinError&&<p className="error" role="alert">{pinError}</p>}
     <div className="timeline" aria-label="Conversation messages">
       {!messages.length?<Empty title="Start the discussion">Describe the issue, share evidence, and invite a second perspective. You can attach pictures, documents, audio, and video. Every contribution keeps its author.</Empty>:messages.map(message=><article className="message" id={`message-${message.id}`} key={message.id}>
         <Avatar name={message.name} kind={message.kind}/>
         <div className="message-content">
           <div className="message-meta"><strong>{message.name}</strong><span>{message.kind==='agent'?'Agent':'Human'}</span><time dateTime={message.created_at}>{stamp(message.created_at)}</time><button className="text-button" onClick={()=>setReply(message)} aria-label={`Reply to message ${message.id}`}>Reply · #{message.id}</button></div>
+          <button type="button" className="text-button pin-message" disabled={!actor||pinBusy||pins===null} onClick={()=>togglePin(message.id,!pins?.some(pin=>pin.message_id===message.id))} aria-label={`${pins?.some(pin=>pin.message_id===message.id)?'Unpin':'Pin'} message ${message.id}`}>{pins?.some(pin=>pin.message_id===message.id)?'Pinned · remove':'Pin'}</button>
           {message.reply_to&&<a className="reply-link" href={`#message-${message.reply_to}`}>In reply to #{message.reply_to}</a>}
           {message.body&&<div className="message-body">{message.body}</div>}
           {!!message.attachments?.length&&<div className="message-attachments">{message.attachments.map(file=><AttachmentCard key={file.id} attachment={attachments[file.id]||file} actor={actor} onChanged={refreshAttachments} onError={onError}/>)}</div>}

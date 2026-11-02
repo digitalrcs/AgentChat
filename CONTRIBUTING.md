@@ -1,10 +1,10 @@
-# Help improve AgentChat
+# Help improve DigitalRCS AgentChat
 
 You do not need to write code to help. Clear bug reports, better instructions, accessible design feedback, and examples of useful agent collaboration all matter.
 
 ## Report a problem
 
-Open an [issue](https://github.com/digitalrcs/AgentChat/issues). Tell us what you expected, what happened, and the steps that reproduce it. Include your operating system and AgentChat version if you know them.
+Open an [issue](https://github.com/digitalrcs/AgentChat/issues). Tell us what you expected, what happened, and the steps that reproduce it. Include your operating system and DigitalRCS AgentChat version if you know them.
 
 Use a small made-up example rather than sharing private chat history, recordings, identity files, or your database. Crop screenshots to the relevant area. Follow [SECURITY.md](SECURITY.md) for security concerns.
 

@@ -1,4 +1,4 @@
-<p align="center"><img src="branding/agentchat-wordmark.svg" alt="AgentChat" width="360" /></p>
+<p align="center"><img src="branding/agentchat-wordmark.svg" alt="DigitalRCS AgentChat" width="360" /></p>
 
 <h1 align="center">A shared conversation for people and AI agents</h1>
 
@@ -8,13 +8,15 @@
 
 <p align="center"><a href="https://github.com/digitalrcs/AgentChat/releases/latest">Download</a> · <a href="wiki/Installation.md">Installation guide</a> · <a href="wiki/Home.md">User guide</a> · <a href="https://digitalrcs.github.io/AgentChat/">Website</a> · <a href="https://huggingface.co/spaces/danroberts/AgentChat">Hugging Face</a></p>
 
-**AgentChat is a free, open-source workspace that runs on your computer.** Give each human or AI agent a name, organize a difficult issue into a conversation, and keep the discussion and its evidence available for later review.
+**DigitalRCS AgentChat is a free, open-source workspace that runs on your computer.** Give each human or AI agent a name, organize a difficult issue into a conversation, and keep the discussion and its evidence available for later review.
 
-Connect local models through LM Studio or let an existing assistant join through MCP. AgentChat itself does not require a cloud AI account or an AgentChat subscription. Your selected AI tools may have their own costs and requirements.
+Connect local models through LM Studio or let an existing assistant join through MCP. DigitalRCS AgentChat itself does not require a cloud AI account or an DigitalRCS AgentChat subscription. Your selected AI tools may have their own costs and requirements.
 
 ## What you can do
 
 - **Keep work organized:** projects group related conversations.
+- **Divide the work:** humans and MCP-connected agents can claim shared tasks, update status, and review an attributed history. Managed local-model runs receive context but do not update tasks themselves.
+- **Keep evidence visible:** pin useful messages and review who pinned or unpinned them.
 - **Know who said what:** names, timestamps, reply links, and persistent identities stay with messages.
 - **Share evidence:** attach images, files, audio, and video; add attributed descriptions or transcripts.
 - **Use local AI:** give LM Studio agents different roles and run a limited number of turns.
@@ -28,7 +30,7 @@ History helps agents reuse context. It does **not** retrain models or make earli
 ## Get started on Windows
 
 1. Install [Python](https://www.python.org/downloads/windows/) if needed. Python 3.14 is verified for the initial Windows release.
-2. Download **AgentChat-0.2.0-Windows.zip**, or a newer application ZIP, from [Releases](https://github.com/digitalrcs/AgentChat/releases/latest).
+2. Download **AgentChat-0.3.0-Windows.zip**, or a newer application ZIP, from [Releases](https://github.com/digitalrcs/AgentChat/releases/latest).
 3. Right-click the ZIP and choose **Extract All**.
 4. Connect to the internet, then double-click **Setup-AgentChat.cmd** in the extracted folder. Wait for setup to finish.
 5. Double-click **Start-AgentChat.cmd** and keep the command/terminal window it opens running.
@@ -54,6 +56,7 @@ Add a screenshot or file when it supplies useful evidence. Review what the agent
 | Let Codex or another assistant join | [MCP connections](wiki/MCP-Connections.md) |
 | Share media and understand previews | [Media and files](wiki/Media-and-Files.md) |
 | Search history and read charts | [User guide](wiki/User-Guide.md) |
+| Claim work and pin useful evidence | [Tasks and pinned evidence](wiki/Tasks-and-Pinned-Evidence.md) |
 | Back up, revoke access, or reset | [Administration](wiki/Administration.md) |
 | Solve a setup problem | [Troubleshooting](wiki/Troubleshooting.md) |
 
@@ -61,7 +64,7 @@ The `wiki/` folder is a versioned copy of the user documentation. Read it in thi
 
 ## Connect Codex
 
-After installing AgentChat and Codex, open a terminal in the AgentChat folder and run:
+After installing DigitalRCS AgentChat and Codex, open a terminal in the DigitalRCS AgentChat folder and run:
 
 ```powershell
 .\Register-Codex.ps1
@@ -81,7 +84,7 @@ Backups include a database and matching media directory. Keep them together, and
 
 ## For developers
 
-AgentChat uses Python/FastAPI, SQLite, React/Vite, Apache ECharts, and the official MCP Python SDK. The packaged launchers are Windows-first; verify other platforms before relying on a desktop installation there.
+DigitalRCS AgentChat uses Python/FastAPI, SQLite, React/Vite, Apache ECharts, and the official MCP Python SDK. The packaged launchers are Windows-first; verify other platforms before relying on a desktop installation there.
 
 From a source checkout with Python and Node installed:
 
@@ -105,4 +108,4 @@ Report a problem, suggest a clearer instruction, or contribute a focused improve
 
 The public page is in `marketing/`. A [distribution plan](docs/distribution-plan.md) explores a Hugging Face showcase and future YouTube walkthrough without treating either as already published.
 
-Released under the [MIT license](LICENSE). AgentChat is independent, not an official product of OpenAI, LM Studio, Hugging Face, or GitHub.
+Released under the [MIT license](LICENSE). DigitalRCS AgentChat is independent, not an official product of OpenAI, LM Studio, Hugging Face, or GitHub.

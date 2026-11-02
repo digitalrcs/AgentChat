@@ -18,14 +18,19 @@ def create_app(store=None):
     async def lifespan(app):
         yield
         await runner.stop()
-    app = FastAPI(title='AgentChat', docs_url=None, redoc_url=None,lifespan=lifespan)
+    app = FastAPI(title='DigitalRCS AgentChat', docs_url=None, redoc_url=None,lifespan=lifespan)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1','localhost','testserver'])
 
     @app.middleware('http')
     async def local_only(request: Request, call_next):
         origin = request.headers.get('origin')
         allowed = {f'{request.url.scheme}://{request.url.netloc}','http://127.0.0.1:5173','http://localhost:5173'}
-        if (origin and origin not in allowed) or request.headers.get('sec-fetch-site') == 'cross-site':
+        # Links and browser extensions may open the app with cross-site fetch metadata.
+        # Only the public app shell can be opened this way, never data/API endpoints.
+        shell_navigation = (request.method == 'GET' and request.url.path in ('/', '/index.html')
+            and request.headers.get('sec-fetch-mode') == 'navigate'
+            and request.headers.get('sec-fetch-dest') == 'document')
+        if (origin and origin not in allowed) or (request.headers.get('sec-fetch-site') == 'cross-site' and not shell_navigation):
             return JSONResponse({'detail':'Cross-origin requests are not allowed.'}, status_code=403)
         if request.method in ('POST','PUT','DELETE','PATCH') and request.headers.get('x-agentchat') != 'local-ui':
             return JSONResponse({'detail':'Missing local UI request header.'}, status_code=403)
@@ -44,7 +49,7 @@ def create_app(store=None):
         return JSONResponse({'detail':'LM Studio could not be reached. Check its address and running server.'},status_code=502)
 
     @app.get('/api/health')
-    def health(): return {'status':'ok','service':'agentchat','version':'0.2.0'}
+    def health(): return {'status':'ok','service':'agentchat','version':'0.3.0'}
     @app.get('/api/participants')
     def participants(): return store.participants()
     @app.post('/api/participants')
@@ -62,6 +67,22 @@ def create_app(store=None):
     @app.post('/api/conversations/{room_id}/messages')
     def post(room_id: str, data: Message):
         return store.post(room_id,data.participant_id,data.body,data.reply_to,data.client_id,human_only=True,attachment_ids=data.attachment_ids)
+    @app.get('/api/conversations/{room_id}/tasks')
+    def tasks(room_id: str):return store.tasks(room_id)
+    @app.post('/api/conversations/{room_id}/tasks')
+    def create_task(room_id: str,data: TaskCreate):return store.create_task(room_id,data.participant_id,data.title,data.description,human_only=True)
+    @app.post('/api/conversations/{room_id}/tasks/{task_id}/claim')
+    def claim_task(room_id: str,task_id: str,data: Actor):return store.change_task(room_id,task_id,data.participant_id,claim=True,human_only=True)
+    @app.post('/api/conversations/{room_id}/tasks/{task_id}/status')
+    def update_task(room_id: str,task_id: str,data: TaskStatus):return store.change_task(room_id,task_id,data.participant_id,status=data.status,override=data.override,note=data.note,human_only=True)
+    @app.get('/api/conversations/{room_id}/tasks/{task_id}/history')
+    def task_history(room_id: str,task_id: str):return store.task_history(room_id,task_id)
+    @app.get('/api/conversations/{room_id}/pins')
+    def pins(room_id: str):return store.pins(room_id)
+    @app.get('/api/conversations/{room_id}/pins/history')
+    def pin_history(room_id: str):return store.pin_history(room_id)
+    @app.post('/api/conversations/{room_id}/pins/{message_id}')
+    def pin(room_id: str,message_id: int,data: Pin):return store.set_pin(room_id,message_id,data.participant_id,data.pinned,human_only=True)
     @app.get('/api/media-limits')
     def media_limits():
         return {'max_file_bytes':MAX_ATTACHMENT_BYTES,'max_files_per_message':MAX_MESSAGE_ATTACHMENTS,
@@ -174,3 +195,15 @@ class Run(Input):
     agent_ids: list[str]
     turns: int = 4
     knowledge_query: str = ''
+
+class Actor(Input):
+    participant_id: str
+class TaskCreate(Actor):
+    title: str = Field(min_length=1,max_length=200)
+    description: str = Field(default='',max_length=4000)
+class TaskStatus(Actor):
+    status: str
+    override: bool = False
+    note: str = Field(default='',max_length=2000)
+class Pin(Actor):
+    pinned: bool = True

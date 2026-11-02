@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 Write-Host ''
-Write-Host 'Welcome to AgentChat setup.' -ForegroundColor Cyan
+Write-Host 'Welcome to DigitalRCS AgentChat setup.' -ForegroundColor Cyan
 Write-Host 'This creates a private Python environment in this folder. Your chats will stay in the data folder.'
 if (-not (Test-Path '.venv\Scripts\python.exe')) {
     $pythonCommand = Get-Command py -ErrorAction SilentlyContinue
@@ -11,7 +11,7 @@ if (-not (Test-Path '.venv\Scripts\python.exe')) {
     & $pythonCommand.Source @pythonArguments -c "import sys; sys.exit(0 if (3,12) <= sys.version_info[:2] < (3,15) else 1)"
     if ($LASTEXITCODE) { throw 'Please install Python 3.12, 3.13 or 3.14 from https://www.python.org/downloads/windows/, then run setup again.' }
     & $pythonCommand.Source @pythonArguments -m venv .venv
-    if ($LASTEXITCODE) { throw 'Could not create the Python environment. Extract AgentChat to a writable folder such as Documents, then try again.' }
+    if ($LASTEXITCODE) { throw 'Could not create the Python environment. Extract DigitalRCS AgentChat to a writable folder such as Documents, then try again.' }
 }
 Write-Host 'Installing the required Python components. Internet access is needed for this step.'
 & '.\.venv\Scripts\python.exe' -m pip install -r requirements.lock.txt

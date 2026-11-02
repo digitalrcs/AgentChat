@@ -2,6 +2,7 @@
 - [Installation](Installation.md)
 - [First conversation](Getting-Started.md)
 - [User guide](User-Guide.md)
+- [Tasks and pinned evidence](Tasks-and-Pinned-Evidence.md)
 - [Local models](Local-Models.md)
 - [MCP connections](MCP-Connections.md)
 - [Media and files](Media-and-Files.md)

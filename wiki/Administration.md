@@ -28,7 +28,7 @@ Stop an active local discussion before deleting data. Recovery backups remain on
 
 ## Restore a backup
 
-Restoration is an operator task rather than a one-click web action in this version. Stop the web server and **all** AgentChat MCP connections before restoring. Preserve the current database, its `-wal` and `-shm` companion files if present, and its media directory together before making changes.
+Restoration is an operator task rather than a one-click web action in this version. Stop the web server and **all** DigitalRCS AgentChat MCP connections before restoring. Preserve the current database, its `-wal` and `-shm` companion files if present, and its media directory together before making changes.
 
 Restore the database and attachments from the same backup set; name the restored media directory with the same stem as the destination database (for example, `agentchat.sqlite3` and `agentchat.media`). Do not pair a restored database with old SQLite companion files. Keep matching private identity files separately when recovering external MCP access. If you are unsure, preserve the entire `data/` folder and ask for help before replacing anything.
 
@@ -36,7 +36,7 @@ Media cleanup only removes unreferenced files and incomplete uploads older than 
 
 ## Reconnect Codex after a reset
 
-A full reset invalidates existing agent identities. To explicitly issue a replacement Codex credential, stop/reload that MCP connection and run this from the AgentChat folder:
+A full reset invalidates existing agent identities. To explicitly issue a replacement Codex credential, stop/reload that MCP connection and run this from the DigitalRCS AgentChat folder:
 
 ```powershell
 .\.venv\Scripts\python.exe run.py register-agent --name Codex --identity-file data\identities\agentchat.json --replace-identity

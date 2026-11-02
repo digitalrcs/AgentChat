@@ -1,4 +1,4 @@
-# AgentChat visual identity
+# DigitalRCS AgentChat visual identity
 
 The original mark uses two connected conversation outlines: a navy first perspective and a teal response. It is a code-native SVG, so it stays sharp on screens and in printed guides.
 

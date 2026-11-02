@@ -12,6 +12,7 @@ import shutil
 import unicodedata
 import uuid
 from app.media import MediaStoreMixin, MAX_MESSAGE_ATTACHMENTS
+from app.coordination import CoordinationMixin, SCHEMA
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -23,7 +24,7 @@ def clean(value, label, maximum):
         raise ValueError(f'{label} must contain 1–{maximum} characters.')
     return value.strip()
 
-class Store(MediaStoreMixin):
+class Store(MediaStoreMixin, CoordinationMixin):
     def __init__(self, path=None):
         self.path = Path(path or os.environ.get('AGENTCHAT_DB', ROOT / 'data' / 'agentchat.sqlite3')).resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -68,6 +69,7 @@ class Store(MediaStoreMixin):
                   status TEXT NOT NULL, completed_turns INTEGER NOT NULL DEFAULT 0,
                   total_turns INTEGER NOT NULL, detail TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL);
             ''')
+            db.executescript(SCHEMA)
             columns = {r['name'] for r in db.execute('PRAGMA table_info(conversations)')}
             if 'project_id' not in columns:
                 db.execute('ALTER TABLE conversations ADD COLUMN project_id TEXT REFERENCES projects(id)')
@@ -225,7 +227,7 @@ class Store(MediaStoreMixin):
             items = [dict(r) for r in db.execute('''SELECT m.id,m.participant_id,p.name,p.kind,m.body,m.created_at,m.reply_to
               FROM messages m JOIN participants p ON p.id=m.participant_id WHERE conversation_id=? ORDER BY m.id''', (room_id,))]
         for item in items:item['attachments']=self.attachments(room_id,item['id'])
-        return dict(conversation=room, messages=items, statistics=self.stats(room_id),
+        return dict(conversation=room, messages=items, statistics=self.stats(room_id), **self.coordination_export(room_id),
                     attachment_note='This JSON contains attachment metadata and authored notes. Download originals separately, or create an Admin backup to preserve bytes.')
 
     def search(self, query, limit=50, project_id=None):
@@ -253,9 +255,9 @@ class Store(MediaStoreMixin):
     def overview(self):
         with self.connect() as db:
             counts = {t: db.execute(f'SELECT count(*) FROM {t}').fetchone()[0]
-                      for t in ('projects','participants','conversations','messages','attachments')}
+                      for t in ('projects','participants','conversations','messages','attachments','tasks','pins')}
             media_bytes=db.execute('SELECT coalesce(sum(size_bytes),0) FROM attachments').fetchone()[0]
-        return dict(**counts, attachment_bytes=media_bytes,media_directory=str(self.media_dir),database=str(self.path), schema_version=2)
+        return dict(**counts, attachment_bytes=media_bytes,media_directory=str(self.media_dir),database=str(self.path), schema_version=3)
 
     def backup(self):
         folder = self.path.parent / 'backups'
@@ -295,6 +297,9 @@ class Store(MediaStoreMixin):
             db.execute('BEGIN IMMEDIATE')
             media_ids=[r['id'] for r in db.execute('SELECT id FROM attachments WHERE (? IS NULL OR conversation_id=?)',
                 (room_id if scope=='conversation' else None,room_id if scope=='conversation' else None))]
+            for table in ('pin_events','pins','tasks'):
+                if scope=='conversation':db.execute(f'DELETE FROM {table} WHERE conversation_id=?',(room_id,))
+                else:db.execute(f'DELETE FROM {table}')
             if scope == 'conversation':
                 db.execute('DELETE FROM attachments WHERE conversation_id=?',(room_id,))
                 db.execute('DELETE FROM runs WHERE conversation_id=?', (room_id,))

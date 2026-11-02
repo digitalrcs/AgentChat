@@ -24,6 +24,8 @@ def test_real_stdio_protocol_and_history(tmp_path):
                 async def call(name,args={}):
                     result=await session.call_tool(name,args)
                     assert not result.isError, result
+                    if result.structuredContent is not None:
+                        return result.structuredContent.get('result',result.structuredContent)
                     return json.loads(result.content[0].text)
                 me=await call('who_am_i');assert me['id']==person['id']
                 project=await call('create_project',{'name':'Protocol project'})
@@ -47,6 +49,16 @@ def test_real_stdio_protocol_and_history(tmp_path):
                 assert not image.isError
                 assert image.content[0].type=='image' and image.content[0].mimeType=='image/png'
                 assert image.content[0].data==png
+                task=await call('create_task',{'conversation_id':room['id'],'title':'Review protocol'})
+                assert task['created_by']==person['id']
+                claimed=await call('claim_task',{'conversation_id':room['id'],'task_id':task['id']})
+                assert claimed['owner_id']==person['id']
+                await call('update_task_status',{'conversation_id':room['id'],'task_id':task['id'],'status':'done','note':'Checked'})
+                events=await call('task_history',{'conversation_id':room['id'],'task_id':task['id']})
+                assert events[-1]['participant_id']==person['id'] and events[-1]['note']=='Checked'
+                await call('pin_message',{'conversation_id':room['id'],'message_id':posted['id']})
+                pins=await call('list_pinned_messages',{'conversation_id':room['id']})
+                assert pins[0]['participant_id']==person['id']
                 s.revoke_agent(person['id'])
                 result=await session.call_tool('who_am_i',{})
                 assert result.isError

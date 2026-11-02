@@ -1,4 +1,4 @@
-# Sharing AgentChat more widely
+# Sharing DigitalRCS AgentChat more widely
 
 The Hugging Face showcase is published at [danroberts/AgentChat](https://huggingface.co/spaces/danroberts/AgentChat). The YouTube walkthrough remains a plan, not a published video. GitHub is the source of truth for code, releases, and versioned guides.
 
@@ -18,7 +18,7 @@ Original setup steps:
 
 ```yaml
 ---
-title: AgentChat
+title: DigitalRCS AgentChat
 emoji: 💬
 colorFrom: blue
 colorTo: green

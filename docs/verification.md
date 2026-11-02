@@ -1,24 +1,23 @@
 # Verification record
 
-AgentChat 0.2.0, verified November 1, 2026. All destructive and synthetic media checks used isolated databases; working chat history was preserved.
+DigitalRCS AgentChat 0.3.0, verified November 1, 2026. Destructive checks and synthetic conversations used isolated databases. Working chat history was preserved and backed up before upgrade.
 
-- **29 backend tests passed**: persistent names/history, projects/search/statistics, real stdio MCP tools, revoked identities, media ownership and room boundaries, upload retries and disconnect cleanup, safe file responses, HTTP byte ranges, annotations, backup restoration including file bytes, and reset behavior.
-- **Production frontend build passed.** ECharts is loaded on demand; Vite reports the approximately 535 KB analytics chunk as large. It does not block the initial conversation interface.
-- **GitHub Actions passed** on Windows/Python 3.14 and Ubuntu/Python 3.12, including all backend tests, the frontend build, and release packaging. The first run exposed a missing parent directory in the CI temporary-path setting; the corrected workflow uses a fresh-checkout-safe path.
-- **Browser regression passed in installed Microsoft Edge** against isolated mocked API responses: upload retry, duplicate prevention, author lock, failed-send preservation, actual image decode and audio/video playback, attributed notes, draft removal, file limits, and mobile layout.
-- **Real HTTP integration inspected in the in-app browser:** four synthetic attachments uploaded and posted to one conversation, image and video decoded, and a contributed description was saved with its author. API media content and range behavior are also covered by backend tests.
-- **Windows ZIP installation passed** in a separate extracted folder: a fresh Python environment installed pinned dependencies and used the included interface without a Node build. The extracted server started successfully.
-- **Marketing page checked** at desktop and mobile widths: assets loaded, no horizontal overflow, and no warning/error console entries.
-- The earlier local-model smoke test completed two turns under distinct agent names. The new media runner tests verify that text-only agents receive file metadata and attributed text notes rather than fabricated media analysis.
-- Codex registration is enabled locally; the development team used dedicated MCP identities to record its decisions in AgentChat. Loading tools in another Codex chat remains a client connection/reload step.
+- **36 backend tests passed**: persistent identities/history, projects/search/statistics, real stdio MCP, revocation, media ownership and retries, safe downloads and byte ranges, backup/restore, reset behavior, atomic task claims and ownership conflicts, audited status changes, pins, exports, and local-model context.
+- **Production frontend build passed.** ECharts loads on demand. Vite reports the approximately 535 KB analytics chunk as large; it does not block the initial conversation interface.
+- **Edge browser regression passed** with isolated mocked APIs: media playback and upload recovery, task creation/claim/status/history, conflict refresh, explicit human override, stale-data failure handling, pins, and mobile layout.
+- **Real HTTP workflow checked in Brave** with an isolated database: created and claimed a task, completed it, and pinned a message with original-author and pinner attribution. The DigitalRCS branding and marketing page were visually checked.
+- Opening the app from another site now permits only top-level navigation to its app shell. Regression tests confirm that cross-origin API access, downloads, iframe embedding, and writes remain blocked.
+- An existing database backup was upgraded separately: original participant, conversation, message, and attachment counts were unchanged, and SQLite integrity checking passed.
+- The earlier local-model smoke test completed two turns under distinct agent names. Runner tests verify bounded task/pin context and attributed media notes. The built-in text-only runner does not invoke MCP tools or automatically claim tasks.
+- Codex registration is enabled locally. The development team used dedicated MCP identities to record decisions in the application. Reloading a Codex connection is needed to discover newly added tools.
 
-## Limits
+## Publication and limits
 
-ChatGPT account/tunnel integration, public MCP catalog acceptance, Hugging Face publication, and YouTube upload have not been performed. The repository contains preparation and connection guides, not claims of those external approvals.
+Source, installation guides, and release downloads are published on GitHub. GitHub Actions verifies Windows/Python 3.14 and Ubuntu/Python 3.12; inspect the workflow attached to the release commit for its current result. The Hugging Face Space is a static product and download showcase, not a hosted chat backend. GitHub Pages hosts the marketing page. Wiki-style guides are maintained in the repository's `wiki/` folder.
 
-The web app is a trusted local-owner workspace, not an authenticated public chat service. Media codec support depends on the browser. Text-only models cannot directly interpret images, audio, or video; descriptions and transcripts are separately attributed contributions.
+The web app is a trusted local-owner workspace, not an authenticated public chat service. ChatGPT account/tunnel integration, public MCP catalog acceptance, and YouTube upload have not been performed. Media codec support depends on the browser. Text-only models use descriptions/transcripts, not direct media interpretation. Shared knowledge is retrieved context, not model training.
 
-The test suite emits one upstream Starlette TestClient deprecation warning for its httpx integration. Dependencies are pinned to the versions used for validation.
+The suite emits one upstream Starlette TestClient deprecation warning for its httpx integration. Dependencies are pinned to the validated versions.
 
 ## Reproduce
 
@@ -32,4 +31,4 @@ node tests/media-browser.mjs
 .\.venv\Scripts\python.exe scripts/package_release.py
 ```
 
-The browser regression can instead use Playwright's installed Chromium by omitting the channel variable. Test fixtures are synthetic, and browser results are written under the ignored `data/` folder. Never direct tests at the working chat database.
+The browser regression can use Playwright's installed Chromium by omitting the channel variable. Fixtures are synthetic; browser results are written under ignored `data/`. Never direct tests at the working chat database. Windows release ZIPs include the built interface and can be installed without Node.js.

@@ -25,7 +25,7 @@ The record retains the original filename, uploader, conversation, size, content 
 
 Use an attachment's annotation controls to add a **description** or **transcript**. These are separate from the original file and retain the person or agent who supplied them and the time they were added.
 
-AgentChat does **not** automatically transcribe recordings or describe images. An authored transcript may be incomplete or wrong. Check it against the original when the details matter.
+DigitalRCS AgentChat does **not** automatically transcribe recordings or describe images. An authored transcript may be incomplete or wrong. Check it against the original when the details matter.
 
 Text-only local agents receive attachment metadata and authored notes. They do not receive raw video, audio, or images as if they could understand them. An external MCP client with a vision-capable model can explicitly request a supported image through the image tool.
 

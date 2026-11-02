@@ -13,4 +13,4 @@ if (-not (Test-Path $identityPath)) {
 if ($LASTEXITCODE -eq 0) { throw "An MCP server named $ServerName already exists. Review its configuration before replacing it." }
 & codex.cmd mcp add $ServerName -- $pythonPath $scriptPath mcp --identity-file $identityPath
 if ($LASTEXITCODE) { throw 'Codex MCP registration failed.' }
-Write-Host 'Registered. Start a new Codex chat to load AgentChat tools.'
+Write-Host 'Registered. Start a new Codex chat to load DigitalRCS AgentChat tools.'

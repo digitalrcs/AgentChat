@@ -4,7 +4,7 @@ from pathlib import Path
 from app.store import ROOT, Store
 
 def main():
-    parser = argparse.ArgumentParser(description='AgentChat local web application and MCP server')
+    parser = argparse.ArgumentParser(description='DigitalRCS AgentChat local web application and MCP server')
     parser.add_argument('--db',type=Path,default=None)
     sub = parser.add_subparsers(dest='command',required=True)
     web = sub.add_parser('web')

@@ -30,11 +30,22 @@ const page=await browser.newPage({viewport:{width:1440,height:1000}});
 const pageErrors=[];page.on('pageerror',error=>pageErrors.push(error.message));
 const people=[{id:'human-1',name:'Test participant',kind:'human',created_at:new Date().toISOString()}];
 const room={id:'room-1',title:'Media verification',objective:'Synthetic browser test for safe media sharing.',project_id:null,created_at:new Date().toISOString(),updated_at:new Date().toISOString(),message_count:0};
+const pins=[],tasks=[];let conflictNextClaim=false,failNextTaskLoad=false;
 const files=[],messages=[],bytes=new Map(),uploadAttempts=new Map();
 let nextId=0,failNextPost=false;
 const json=(route,data,status=200)=>route.fulfill({status,contentType:'application/json',body:JSON.stringify(data)});
 await page.route('**/api/**',async route=>{
   const request=route.request(),url=new URL(request.url()),p=url.pathname,method=request.method();
+  if(p==='/api/conversations/room-1/pins')return json(route,pins);
+  const pin=p.match(/^\/api\/conversations\/room-1\/pins\/(\d+)$/);
+  if(pin){const id=Number(pin[1]),data=request.postDataJSON();const index=pins.findIndex(item=>item.message_id===id);if(data.pinned&&index<0)pins.push({message_id:id,body:messages.find(m=>m.id===id).body,name:'Test participant',pinned_by_name:'Test participant'});if(!data.pinned&&index>=0)pins.splice(index,1);return json(route,{message_id:id,pinned:data.pinned})}
+  if(p==='/api/conversations/room-1/tasks'){
+    if(method==='GET'){if(failNextTaskLoad){failNextTaskLoad=false;return json(route,{detail:'Synthetic task refresh failure'},503)}return json(route,tasks)}
+    const data=request.postDataJSON();const task={...data,id:`task-${tasks.length+1}`,conversation_id:'room-1',status:'open',owner_id:null,owner_name:null,creator_name:'Test participant',created_at:new Date().toISOString()};tasks.push(task);return json(route,task);
+  }
+  if(p.endsWith('/tasks/task-1/history'))return json(route,[{id:1,name:'Test participant',action:'released',status:'open',previous_status:'in_progress',previous_owner_id:'agent-2',owner_id:null,override:1,note:'Local human explicitly released this task for reassignment.',created_at:new Date().toISOString()}]);
+  const taskAction=p.match(/^\/api\/conversations\/room-1\/tasks\/([^/]+)\/(claim|status)$/);
+  if(taskAction){const task=tasks.find(item=>item.id===taskAction[1]),data=request.postDataJSON();if(taskAction[2]==='claim'){if(conflictNextClaim){conflictNextClaim=false;Object.assign(task,{owner_id:'agent-2',owner_name:'Other agent',status:'in_progress'});return json(route,{detail:'This task is already claimed by Other agent.'},400)}Object.assign(task,{owner_id:data.participant_id,owner_name:'Test participant',status:'in_progress'})}else {assert.ok(task.owner_id===data.participant_id||data.override,'Only the owner or explicit override may update');task.status=data.status;if(data.status==='open')Object.assign(task,{owner_id:null,owner_name:null})}return json(route,task)}
   if(p==='/api/participants')return json(route,people);
   if(p==='/api/projects')return json(route,[]);
   if(p==='/api/conversations')return json(route,[{...room,message_count:messages.length}]);
@@ -110,12 +121,59 @@ try{
   assert.equal(files.filter(f=>f.message_id===null).length,0);
   await input.setInputFiles(Array.from({length:11},(_,index)=>({name:`too-many-${index}.txt`,mimeType:'text/plain',buffer:Buffer.from('x')})));
   await expect(page.getByText(/Attach up to 10 files to one message/)).toBeVisible();assert.equal(files.length,4);
+  await page.getByRole('button',{name:'Pin message 2',exact:true}).click();
+  const pinned=page.getByRole('region',{name:'Pinned evidence'});
+  await expect(pinned.getByText('Pinned by Test participant',{exact:true})).toBeVisible();
+  await pinned.getByRole('button',{name:'Unpin message 2',exact:true}).click();
+  await expect(pinned.getByText(/No pins yet/)).toBeVisible();
+  await page.getByRole('button',{name:'Tasks',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Analytics',exact:true})).toHaveAttribute('class','');
+  await page.getByLabel('Task title',{exact:true}).fill('Review evidence');
+  await page.getByLabel('What needs to be done? (optional)',{exact:true}).fill('Check the original recording before drawing conclusions.');
+  await page.getByRole('button',{name:'Add task',exact:true}).click();
+  let card=page.getByRole('article',{name:'Task Review evidence',exact:true});
+  await expect(card.getByText('Unclaimed',{exact:true})).toBeVisible();
+  await card.getByRole('button',{name:'Claim task',exact:true}).click();
+  await expect(card.getByText('Owner: Test participant',{exact:true})).toBeVisible();
+  await card.getByLabel('Status for Review evidence').selectOption('blocked');
+  await expect(page.getByRole('region',{name:'Blocked tasks'}).getByRole('article')).toHaveCount(1);
+  await card.getByLabel('Status for Review evidence').selectOption('done');
+  await expect(page.getByRole('region',{name:'Done tasks'}).getByRole('article')).toHaveCount(1);
+  await card.getByRole('button',{name:'Release task',exact:true}).click();
+  await expect(card.getByText('Unclaimed',{exact:true})).toBeVisible();
+  conflictNextClaim=true;
+  await card.getByRole('button',{name:'Claim task',exact:true}).click();
+  await expect(page.getByRole('alert').filter({hasText:'already claimed'})).toBeVisible();
+  await expect(card.getByText('Owner: Other agent',{exact:true})).toBeVisible();
+  await expect(card.getByRole('button',{name:'Claim task',exact:true})).toHaveCount(0);
+  page.once('dialog',dialog=>dialog.accept());
+  await card.getByRole('button',{name:'Override and release',exact:true}).click();
+  await expect(card.getByText('Unclaimed',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Conversation',exact:true}).click();
+  failNextTaskLoad=true;
+  await page.getByRole('button',{name:'Tasks',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Analytics',exact:true})).toHaveAttribute('class','');
+  await expect(page.getByRole('alert').filter({hasText:'Synthetic task refresh failure'})).toBeVisible();
+  await expect(page.getByRole('article',{name:'Task Review evidence',exact:true})).toHaveCount(0);
+  await expect(page.getByRole('button',{name:'Add task',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Retry',exact:true}).click();
+  await expect(page.getByRole('article',{name:'Task Review evidence',exact:true})).toBeVisible();
+  await page.getByText('Task history',{exact:true}).click();
+  await expect(page.getByText(/Local owner override/)).toBeVisible();
+  await expect(page.getByText('Note: Local human explicitly released this task for reassignment.',{exact:true})).toBeVisible();
+  await page.screenshot({path:path.join(results,'tasks-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile task board must fit');
+  await page.screenshot({path:path.join(results,'tasks-mobile.png'),fullPage:true});
+  await page.setViewportSize({width:1440,height:1000});
+  await page.getByRole('button',{name:'Conversation',exact:true}).click();
+  await expect(page.getByRole('region',{name:'Attachment clip.mp4'})).toBeVisible();
   await page.screenshot({path:path.join(results,'media-desktop.png'),fullPage:true});
   await page.setViewportSize({width:390,height:844});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile page must not overflow horizontally');
   await page.screenshot({path:path.join(results,'media-mobile.png'),fullPage:true});
   assert.deepEqual(pageErrors,[]);
-  console.log('PASS: upload retry, duplicate prevention, author lock, failed-send preservation, image/audio/video rendering and playback, attributed notes, draft removal, file count limit and mobile layout.');
+  console.log('PASS: upload retry, duplicate prevention, author lock, failed-send preservation, image/audio/video rendering and playback, attributed notes, draft removal, file count limit, pin/unpin, create/claim/block/complete/release tasks, stale claim conflicts, explicit override, failed task refresh hides stale ownership, attributed override history, and mobile layout.');
   console.log(`Screenshots: ${results}`);
 }catch(error){console.error(JSON.stringify({files:files.map(f=>({id:f.id,name:f.filename,kind:f.media_kind,size:f.size_bytes})),messages:messages.map(m=>({id:m.id,attachments:m.attachments.map(a=>a.filename)})),body:await page.locator('main').innerText()},null,2));await page.screenshot({path:path.join(results,'failure.png'),fullPage:true});throw error}
 finally{await browser.close();if(server)await new Promise(resolve=>server.close(resolve))}

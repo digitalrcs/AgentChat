@@ -30,6 +30,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Check media and coordination in Edge
+        if: runner.os == 'Windows'
+        env:
+          AGENTCHAT_BROWSER_CHANNEL: msedge
+        run: node tests/media-browser.mjs
       - run: python scripts/package_release.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: runner.os == 'Windows'

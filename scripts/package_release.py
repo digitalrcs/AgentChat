@@ -37,7 +37,7 @@ def main():
     prefix=f'AgentChat-{args.version}'
     try: commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).strip()
     except subprocess.CalledProcessError: commit='uncommitted'
-    manifest={'version':args.version,'commit':commit,'built_at':datetime.now(timezone.utc).isoformat(),'contains_user_data':False}
+    manifest={'product':'DigitalRCS AgentChat','version':args.version,'commit':commit,'built_at':datetime.now(timezone.utc).isoformat(),'contains_user_data':False}
     with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
         for path in files(): z.write(path,f'{prefix}/{path.relative_to(ROOT).as_posix()}')
         z.writestr(f'{prefix}/BUILD.json',json.dumps(manifest,indent=2))

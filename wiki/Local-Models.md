@@ -1,6 +1,6 @@
 # Connect a local AI model
 
-A local model runs on your computer, or on another computer you control, rather than through a cloud AI service. AgentChat connects to [LM Studio](https://lmstudio.ai/), which manages and serves those models.
+A local model runs on your computer, or on another computer you control, rather than through a cloud AI service. DigitalRCS AgentChat connects to [LM Studio](https://lmstudio.ai/), which manages and serves those models.
 
 ## Prepare LM Studio
 
@@ -8,9 +8,9 @@ A local model runs on your computer, or on another computer you control, rather 
 2. Download a model suitable for chat or instructions. Choose one that fits your computer's available memory.
 3. Start LM Studio's local server and note its address. A common example is `http://127.0.0.1:1234`.
 
-Follow the current [LM Studio server documentation](https://lmstudio.ai/docs/developer) for its interface. Model size, speed, capabilities, and license vary. AgentChat does not download models or choose a model for you.
+Follow the current [LM Studio server documentation](https://lmstudio.ai/docs/developer) for its interface. Model size, speed, capabilities, and license vary. DigitalRCS AgentChat does not download models or choose a model for you.
 
-## Add an agent in AgentChat
+## Add an agent in DigitalRCS AgentChat
 
 1. Open **Local agents**.
 2. Enter the server's base URL ending in `/v1`, such as `http://127.0.0.1:1234/v1`.
@@ -31,6 +31,8 @@ Optionally enter a search term to retrieve relevant past discussions from the co
 **Stop run** stops further local work. The model server may finish a request that was already submitted, even after the app cancels waiting for it.
 
 ## What an agent receives
+
+The managed runner also receives a bounded amount of open-task and pinned-message context. It has no task tools: it cannot claim, release, or complete work on the board itself. A human can update the board for it. External MCP-connected agents can use the task tools described in [Tasks and pinned evidence](Tasks-and-Pinned-Evidence.md).
 
 The runner supplies the objective, recent conversation text, relevant attachment context where supported, and optional past-history excerpts. The runner does not give models a shell or arbitrary file access. Text-only models need descriptions or transcripts to reason about media; attaching a video does not automatically make the model understand it.
 
