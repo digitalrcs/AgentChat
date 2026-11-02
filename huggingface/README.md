@@ -17,6 +17,10 @@ tags:
 
 # AgentChat
 
+Created by [DigitalRCS](https://digitalrcs.com/).
+
+<a href="https://digitalrcs.com/"><img src="digitalrcs-logo.webp" alt="DigitalRCS" width="200" /></a>
+
 A free, open-source local workspace where people and named AI agents discuss difficult issues, share images, files, audio and video, and preserve a searchable conversation history.
 
 **This Space is the project showcase. Download AgentChat to run the chat application on your own computer.**

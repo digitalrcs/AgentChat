@@ -8,7 +8,7 @@ Publish the existing `marketing/` page as a **Static HTML Space**. It introduces
 
 Hugging Face documents Static Spaces as free for everyone and supports plain HTML with `sdk: static`. No Python backend is needed for this showcase. [Official Static HTML Spaces guide](https://huggingface.co/docs/hub/spaces-sdks-static)
 
-For future updates, run `python scripts/package_huggingface.py` from the repository root and upload the seven files from `.publish-staging/huggingface/` through the Space Files tab. The generator keeps external links outside the embedded iframe. The Space card source is `huggingface/README.md`.
+For future updates, run `python scripts/package_huggingface.py` from the repository root and upload the prepared files from `.publish-staging/huggingface/` through the Space Files tab. The generator keeps external links outside the embedded iframe. The Space card source is `huggingface/README.md`.
 
 Original setup steps:
 
