@@ -109,3 +109,4 @@ Report a problem, suggest a clearer instruction, or contribute a focused improve
 The public page is in `marketing/`. The [Hugging Face showcase](https://huggingface.co/spaces/danroberts/AgentChat) links to the local app download; a YouTube walkthrough is still planned. See the [changelog](CHANGELOG.md) for released changes and the [code of conduct](CODE_OF_CONDUCT.md) for community expectations.
 
 Released under the [MIT license](LICENSE). DigitalRCS AgentChat is independent, not an official product of OpenAI, LM Studio, Hugging Face, or GitHub.
+[![M8ven Score](https://m8ven.ai/badge/mcp/digitalrcs-agentchat-choiys?v=95012c94950e38be1f341733c8713f5b)](https://m8ven.ai/mcp/digitalrcs-agentchat-choiys?s=readme)
